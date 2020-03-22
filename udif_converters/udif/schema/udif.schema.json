@@ -1,0 +1,442 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://getmydata.io/udif.schema.json",
+    "title": "User Data Interchange Format (UDIF)",
+    "type": "object",
+    "description": "An interchange format to standardize handling of data from online data providers.",
+    "allOf": [
+        { "$ref": "#/definitions/base_event" },
+        {
+            "oneOf": [
+                { "$ref": "#/definitions/netflix_watch_video" },
+                { "$ref": "#/definitions/amazon_prime_watch_video" },
+                { "$ref": "#/definitions/google_play_movies_tv" },
+                { "$ref": "#/definitions/google_play_music" },
+                { "$ref": "#/definitions/youtube" },
+                { "$ref": "#/definitions/other_service" }
+            ]
+        }
+    ],
+
+    "definitions": {
+        "udif": {
+            "type": "object",
+            "description": "Fields that should be present in the top level object of every UDIF entry (line) in a UDIF file.",
+            "properties": {
+                "converter_id": {
+                    "description": "The ID of the UDIF converter that generated this line.",
+                    "anyOf": [
+                        { "type": "string" },
+                        { "type": "null" }
+                    ]
+                },
+                "session_id": {
+                    "description": "The ID of the UDIF session that generated this line.",
+                    "anyOf": [
+                        { "type": "string" },
+                        { "type": "null" }
+                    ]
+                },
+                "session_timestamp": {
+                    "description": "The timestamp of when this line was generated. Generally this should be the same throughout a converter/session.",
+                    "anyOf": [
+                        { "type": "string" },
+                        { "type": "null" }
+                    ]
+                }
+            },
+
+            "required": [
+                "converter_id",
+                "session_id"
+            ]
+        },
+
+        "base_event": {
+            "type": "object",
+            "properties": {
+                "udif": {
+                    "$ref": "#/definitions/udif"
+                },
+
+                "timestamp": {
+                    "type": ["string", "null"],
+                    "format": "date-time",
+                    "description": "The timestamp at which the entry happened."
+                },
+
+                "service": {
+                    "type": "string",
+                    "description": "The service on which the event occurred."
+                },
+
+                "type": {
+                    "type": "string",
+                    "description": "The type of activity which occurred."
+                },
+
+                "location": {
+                    "anyOf": [
+                        { "$ref": "#/definitions/location_lat_lon" },
+                        { "$ref": "#/definitions/location_street_address" }
+                    ]
+                }
+            },
+            "required": ["timestamp", "service", "type"]
+        },
+
+        "netflix_watch_video": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "enum": ["netflix"]
+                },
+                "activity": {
+                    "type": "string",
+                    "enum": ["watch_video"]
+                },
+
+                "meta": {
+                    "type": "object",
+                    "properties": {
+                        "video_title": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        }
+                    },
+                    "required": ["video_title"]
+                }
+            },
+
+            "required": ["meta"]
+        },
+
+        "amazon_prime_watch_video": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "enum": ["amazon"]
+                },
+                "activity": {
+                    "type": "string",
+                    "enum": ["watch_video"]
+                },
+
+                "meta": {
+                    "type": "object",
+                    "properties": {
+                        "video_title": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "operating_system": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "browser": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "delivery_type": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "isp": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "content_quality_entitled": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "entitlement_type": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "video_type": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+
+                        "audio_language": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        }
+                    },
+                    "required": ["video_title"]
+                },
+
+                "location": {
+                    "$ref": "#/definitions/location_street_address"
+                }
+            },
+
+            "required": ["meta"]
+        },
+
+        "google_play_movies_tv": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "enum": ["google_play_movies_tv"]
+                },
+                "activity": {
+                    "type": "string"
+                },
+
+                "meta": {
+                    "type": "object",
+                    "properties": {
+                        "video_title": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "app_name": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        }
+                    }
+                }
+            },
+
+            "required": ["meta"]
+        },
+
+        "google_play_music": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "enum": ["google_play_music"]
+                },
+                "activity": {
+                    "type": "string"
+                },
+
+                "meta": {
+                    "type": "object",
+                    "properties": {
+                        "video_title": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "app_name": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        }
+                    }
+                }
+            },
+
+            "required": ["meta"]
+        },
+
+        "youtube": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "enum": ["youtube"]
+                },
+                "activity": {
+                    "type": "string"
+                },
+
+                "meta": {
+                    "type": "object",
+                    "properties": {
+                        "video_title": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "app_name": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "channel_name": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "channel_description": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "youtube_subscription_id": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        },
+                        "youtube_channel_id": {
+                            "anyOf": [
+                                { "type": "null" },
+                                { "type": "string" }
+                            ]
+                        }
+                    }
+                }
+            },
+
+            "required": ["meta"]
+        },
+
+        "other_service": {
+            "type": "object",
+            "properties": {
+                "service": {
+                    "type": "string",
+                    "not": {
+                        "enum": [
+                            "netflix",
+                            "amazon",
+                            "google_play_movies_tv",
+                            "google_play_music",
+                            "youtube"
+                        ]
+                    }
+                }
+            }
+        },
+
+        "location_lat_lon": {
+            "type": "object",
+            "properties": {
+                "latitude": {
+                    "type": "number",
+                    "description": "The latitude coordinate."
+                },
+                "longitude": {
+                    "type": "number",
+                    "description": "The longitude coordinate."
+                }
+            },
+            "required": ["latitude", "longitude"]
+        },
+
+        "location_street_address": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "A displayable, formatted address as rich text."
+                },
+                "level": {
+                    "type": "string",
+                    "description": "Contains the level of place inside of a venue."
+                },
+                "building": {
+                    "type": "string",
+                    "description": "Building name."
+                },
+                "house": {
+                    "type": "string",
+                    "description": "House or street number."
+                },
+                "street": {
+                    "type": "string",
+                    "description": "Street name (in practice may also contain a street number)."
+                },
+                "streets": {
+                    "type": "array",
+                    "description": "If the address represents an intersection or junction, an array of street names involved.",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "post_code": {
+                    "type": "string",
+                    "description": "An alphanumeric string included in a postal address to facilitate mail sorting."
+                },
+                "areas": {
+                    "type": "array",
+                    "description": "An array of named areas below the district and above street. In some regions, such areas may also contain street names, when individual street segments have names separate from the name of the whole road.",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "district": {
+                    "type": "string",
+                    "description": "A division of a city; typically an administrative unit within a larger city or a customary name of a city's neighborhood."
+                },
+                "city": {
+                    "type": "string",
+                    "description": "The name of the primary locality of the place."
+                },
+                "regions": {
+                    "type": "array",
+                    "description": "For address conventions where more than to levels of named areas above the city level are in use, the regions attribute provides an array with all additional area names, ordered by decreasing size (starting with the highest subdivision below state).",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "county": {
+                    "type": "string",
+                    "description": "A division of a state; typically a secondary-level administrative division of a country or equivalent."
+                },
+                "state": {
+                    "type": "string",
+                    "description": "A division of a country; typically a first-level administrative division region."
+                },
+                "state_code": {
+                    "type": "string",
+                    "description": "A code / abbreviation for the state division of a country."
+                },
+                "country": {
+                    "type": "string",
+                    "description": "The localized country name."
+                },
+                "country_code": {
+                    "type": "string",
+                    "description": "A three letter country code."
+                }
+            },
+            "required": ["text"]
+        }
+    }
+}

@@ -1,0 +1,108 @@
+{
+    "id": "3ef99e3d-62fd-4d61-9912-0ec47b6a52f7",
+    "user_id": "de414d9d-b70d-471a-bd6d-eb24a37bd2ee",
+    "generated_timestamp": "2020-02-07T08:52:34.000Z",
+
+    "activity": [
+        {
+            "timestamp": "2020-02-07T00:00:00.000Z",
+            "service": "netflix",
+            "type": "watch_video",
+            "content": {
+                "video_title": "The Dark Knight"
+            }
+        },
+
+        {
+            "timestamp": "2020-02-06T00:00:00.000Z",
+            "service": "netflix",
+            "type": "watch_video",
+            "content": {
+                "video_title": "John Mulaney: New in Town"
+            }
+        },
+
+        {
+            "timestamp": "2020-02-04T01:00:00.000Z",
+            "service": "amazon",
+            "type": "watch_video",
+            "content": {
+                "operating_system": "Roku OS",
+                "browser": "",
+                "delivery_type": "streaming",
+                "isp": "HWC",
+                "content_quality_entitled": "HD",
+                "entitlement_type": "RENTAL",
+                "video_type": "Feature",
+                "audio_language": "",
+                "video_title": "The Perfect Guy"
+            },
+            "location": {
+                "text": "miami, fl, us",
+                "city": "miami",
+                "state": "fl",
+                "country": "us"
+            }
+        },
+
+        {
+            "timestamp": "2020-02-01T08:00:00.000Z",
+            "service": "google",
+            "type": "location",
+            "location": {
+                "latitude": 42.2626,
+                "longitude": -71.8023
+            }
+        },
+
+        {
+            "timestamp": "2020-02-01T12:00:00.000Z",
+            "service": "facebook",
+            "type": "social_media_post",
+            "content": {
+                "post_text": "I don't want to be at work today."
+            }
+        },
+
+        {
+            "timestamp": "2020-02-01T08:00:00.000Z",
+            "service": "google",
+            "type": "location",
+            "location": {
+                "latitude": 42.2626,
+                "longitude": -71.8023
+            }
+        },
+
+        {
+            "timestamp": "2016-07-13T14:17:59.000Z",
+            "service": "google",
+            "type": "watch_video",
+            "content": {
+                "video_title": "Kung Fu Panda 3"
+            }
+        }
+    ],
+
+    "services": {
+        "netflix": [{
+            "account_id": "",
+            "total_service_activity": 2
+        }],
+
+        "facebook": [{
+            "account_id": "",
+            "total_service_activity": 1
+        }],
+
+        "google": [{
+            "account_id": "",
+            "total_service_activity": 2
+        }],
+
+        "amazon": [{
+            "account_id": "",
+            "total_service_activity": 1
+        }]
+    }
+}
